@@ -44,6 +44,11 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
+      {/* <Toast message={form.message} variant={form.variant} ref={toastRef}/> */}
+      <ToastShelf>
+        <Toast message={form.message} variant={form.variant} />
+      </ToastShelf>
+
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>
           <label
