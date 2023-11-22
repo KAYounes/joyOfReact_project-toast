@@ -1,18 +1,31 @@
-import React from 'react';
+import React from "react";
 
-import Toast from '../Toast';
-import styles from './ToastShelf.module.css';
+import Portal from "../Portal/Portal";
+import Toast from "../Toast";
+import { ToastShelfContext } from "../ToastProvider/ToastProvider";
+import styles from "./ToastShelf.module.css";
+import useListenToKey from "../../hooks/useListenToKey";
 
 function ToastShelf() {
+  const { toastShelf, removeToast, clearToasts } = React.useContext(ToastShelfContext);
+  useListenToKey('Escape', clearToasts)
+
+  const shelfDOM = toastShelf.map(function ({ message, variant, key }, index) {
+    return (
+      <li className={styles.toastWrapper} key={key}>
+        <Toast variant={variant} handleHide={() => removeToast(index)}>{message}</Toast>
+      </li>
+    );
+  });
+
+  React.useEffect(function(){
+
+  }, [])
+
   return (
-    <ol className={styles.wrapper}>
-      <li className={styles.toastWrapper}>
-        <Toast variant="notice">Example notice toast</Toast>
-      </li>
-      <li className={styles.toastWrapper}>
-        <Toast variant="error">Example error toast</Toast>
-      </li>
-    </ol>
+    <Portal>
+      <ol className={styles.wrapper}>{shelfDOM}</ol>
+    </Portal>
   );
 }
 
