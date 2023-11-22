@@ -12,4 +12,16 @@
   font-size: 1.25rem;
   cursor: pointer;
   outline-offset: 4px;
+  width: 100%;
+}
+
+.button__disabled
+{
+  background: linear-gradient(
+    to top,
+    hsl(245deg 10% 30%),
+    hsl(280deg 5% 44%)
+  );
+
+  color: hsl(0deg 0% 70%);
 }
