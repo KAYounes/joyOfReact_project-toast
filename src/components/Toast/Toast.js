@@ -24,12 +24,8 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({ variant, children }, ref) {
-  const [visible, setVisible] = React.useState(true);
+function Toast({ variant, handleHide, children }, ref) {
   const Icon = ICONS_BY_VARIANT[variant]
-  if (ref) ref.current = { show };
-
-  if (!visible) return null;
 
   return (
     <div className={`${styles.toast} ${styles[variant]}`}>
@@ -37,20 +33,12 @@ function Toast({ variant, children }, ref) {
         {<Icon />}
       </div>
       <p className={styles.content}>{children}</p>
-      <button className={styles.closeButton} onClick={hide}>
+      <button className={styles.closeButton} onClick={handleHide}>
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
   );
-
-  function show() {
-    setVisible(true);
-  }
-
-  function hide() {
-    setVisible(false);
-  }
 }
 
-export default React.forwardRef(Toast);
+export default Toast;
