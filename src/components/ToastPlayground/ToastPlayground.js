@@ -2,12 +2,11 @@ import React from "react";
 
 import Button from "../Button";
 
+import useToast from "../../hooks/useToast";
 import styles from "./ToastPlayground.module.css";
-import { useTabalize } from "../../Utils/logger";
-import { formReducer } from "./reducers";
 import { INITIAL_FORM_STATE, VARIANT_OPTIONS } from "./constants";
-import Toast from "../Toast/Toast";
-import ToastShelf from "../ToastShelf/ToastShelf";
+import { formReducer } from "./reducers";
+import useEvent from "../../hooks/useEvent";
 
 function ToastPlayground() {
   const [form, dispatchFormReducer] = React.useReducer(
@@ -15,9 +14,7 @@ function ToastPlayground() {
     INITIAL_FORM_STATE
   );
 
-  const toastRef = React.useRef();
-
-  const formTable = useTabalize(form);
+  const toast = useToast();
 
   const variantsRadioDOM = VARIANT_OPTIONS.map(function (variant) {
     return (
@@ -44,12 +41,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {/* <Toast message={form.message} variant={form.variant} ref={toastRef}/> */}
-      <ToastShelf>
-        <Toast message={form.message} variant={form.variant} />
-      </ToastShelf>
-
-      <div className={styles.controlsWrapper}>
+      <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -82,15 +74,10 @@ function ToastPlayground() {
 
         <div className={styles.row}>
           <div className={`${styles.inputWrapper}`}>
-            <Button
-              disabled={!validateForm()}
-              onClick={() => toastRef.current.show()}
-            >
-              Pop Toast!
-            </Button>
+            <Button disabled={!validateForm()}>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 
@@ -98,6 +85,12 @@ function ToastPlayground() {
     if (form.message?.length < 3) return false;
     if (form.variant === null) return false;
     return true;
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    toast.show(form.message, form.variant);
   }
 }
 
